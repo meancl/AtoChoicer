@@ -118,7 +118,9 @@ namespace RequestBasicInfoProject
                 #endregion
 
 
-
+                int nShortTerm = 600;
+                int nLongTerm = 3600;
+                int nTargetTerm = nLongTerm;
 
                 for (int i = 0; i < codeKospiArr.Length; i++)
                 {
@@ -127,12 +129,11 @@ namespace RequestBasicInfoProject
                     {
                         testTextBox.AppendText($"코스피  {i + 1}번째 종목 : {codeKospiArr[i]} TR요청{NEW_LINE}");
                         RequestBasicStockInfo(codeKospiArr[i]);
-                        Delay(600);
+                        Delay(nTargetTerm);
                     }
                     else
                     {
                         testTextBox.AppendText($"코스피  {i + 1}번째 종목 : {codeKospiArr[i]} 데이터베이스에 이미 존재합니다.{NEW_LINE}");
-                        Console.WriteLine(codeKospiArr[i]);
                     }
                 }
 
@@ -143,12 +144,11 @@ namespace RequestBasicInfoProject
                     {
                         testTextBox.AppendText($"코스닥  {i + 1}번째 종목 : {codeKosdaqArr[i]} TR요청{NEW_LINE}");
                         RequestBasicStockInfo(codeKosdaqArr[i]);
-                        Delay(600);
+                        Delay(nTargetTerm);
                     }
                     else
                     {
                         testTextBox.AppendText($"코스닥  {i + 1}번째 종목 : {codeKosdaqArr[i]} 데이터베이스에 이미 존재합니다.{NEW_LINE}");
-                        Console.WriteLine(codeKosdaqArr[i]);
                     }
                 }
 
