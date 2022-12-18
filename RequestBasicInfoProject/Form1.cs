@@ -96,9 +96,21 @@ namespace RequestBasicInfoProject
                 #endregion
 
                 #region DB에서 시간에 맞는 종목
+                DateTime targetDay;
+
+                if (DateTime.Today.DayOfWeek == DayOfWeek.Sunday)
+                    targetDay = DateTime.Today.AddDays(-2);
+                else if (DateTime.Today.DayOfWeek == DayOfWeek.Saturday)
+                    targetDay = DateTime.Today.AddDays(-1);
+                else
+                    targetDay = DateTime.Now;
+
                 var yes = DateTime.Today.AddDays(-1); // 어제
                 var now = DateTime.Now; // 오늘
-                DateTime dateTime = new DateTime(now.Year, now.Month, now.Day); // 현재 어제
+                
+
+
+                DateTime dateTime = new DateTime(targetDay.Year, targetDay.Month, targetDay.Day); // 현재 어제 // or  targetDay
                 today = dateTime;
 
                 infoDict = (dbContext.basicInfo.Where(x => x.생성시간.Equals(today)).ToList()).ToDictionary(keySelector: m => m.종목코드, elementSelector: m => m);
