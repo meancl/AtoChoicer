@@ -39,6 +39,7 @@ namespace RequestBasicInfoProject
             axKHOpenAPI1.OnEventConnect += OnEventConnectHandler; // 로그인 event slot connect
             axKHOpenAPI1.OnReceiveTrData += OnReceiveTrDataHandler; // TR event slot connect
 
+            this.Text = "모니터링 종목요청";
             testTextBox.AppendText("로그인 시도..\r\n");
             dbContext = new MJTradierContext();
             dbContext.Database.EnsureCreated();
@@ -116,11 +117,23 @@ namespace RequestBasicInfoProject
                 infoDict = (dbContext.basicInfo.Where(x => x.생성시간.Equals(today)).ToList()).ToDictionary(keySelector: m => m.종목코드, elementSelector: m => m);
 
                 #endregion
-
+                
 
                 int nShortTerm = 600;
                 int nLongTerm = 3600;
-                int nTargetTerm = nLongTerm;
+                int nTargetTerm = nShortTerm;
+
+                int nTotalMonitored = 0;
+                int nTotalMonitorStockNum = codeKospiArr.Length + codeKosdaqArr.Length;
+                progressBar1.Maximum = nTotalMonitorStockNum;
+
+                void UpdateProgressBar(ref int nCnt)
+                {
+                    nCnt++;
+                    label1.Text = $"{nCnt} / {nTotalMonitorStockNum} ({Math.Round(nCnt * 100.0/ nTotalMonitorStockNum, 2)}%)";
+                    progressBar1.Value = nCnt;
+                    
+                }
 
                 for (int i = 0; i < codeKospiArr.Length; i++)
                 {
@@ -135,6 +148,7 @@ namespace RequestBasicInfoProject
                     {
                         testTextBox.AppendText($"코스피  {i + 1}번째 종목 : {codeKospiArr[i]} 데이터베이스에 이미 존재합니다.{NEW_LINE}");
                     }
+                    UpdateProgressBar(ref nTotalMonitored);
                 }
 
                 for (int i = 0; i < codeKosdaqArr.Length; i++)
@@ -150,6 +164,7 @@ namespace RequestBasicInfoProject
                     {
                         testTextBox.AppendText($"코스닥  {i + 1}번째 종목 : {codeKosdaqArr[i]} 데이터베이스에 이미 존재합니다.{NEW_LINE}");
                     }
+                    UpdateProgressBar(ref nTotalMonitored);
                 }
 
             }
@@ -161,7 +176,7 @@ namespace RequestBasicInfoProject
 
 
 
-
+        
 
         // ============================================
         // 주식기본정보요청 TR요청메소드

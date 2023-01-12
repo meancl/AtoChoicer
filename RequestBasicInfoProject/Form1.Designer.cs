@@ -31,6 +31,8 @@ namespace RequestBasicInfoProject
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.axKHOpenAPI1 = new AxKHOpenAPILib.AxKHOpenAPI();
+            this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.label1 = new System.Windows.Forms.Label();
             this.testTextBox = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.axKHOpenAPI1)).BeginInit();
             this.SuspendLayout();
@@ -44,6 +46,24 @@ namespace RequestBasicInfoProject
             this.axKHOpenAPI1.Size = new System.Drawing.Size(100, 50);
             this.axKHOpenAPI1.TabIndex = 0;
             // 
+            // progressBar1
+            // 
+            this.progressBar1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.progressBar1.Location = new System.Drawing.Point(0, 385);
+            this.progressBar1.Name = "progressBar1";
+            this.progressBar1.Size = new System.Drawing.Size(800, 65);
+            this.progressBar1.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
+            this.progressBar1.TabIndex = 2;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("굴림", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label1.Location = new System.Drawing.Point(317, 409);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(0, 15);
+            this.label1.TabIndex = 3;
+            // 
             // testTextBox
             // 
             this.testTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -52,8 +72,8 @@ namespace RequestBasicInfoProject
             this.testTextBox.Name = "testTextBox";
             this.testTextBox.ReadOnly = true;
             this.testTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.testTextBox.Size = new System.Drawing.Size(800, 450);
-            this.testTextBox.TabIndex = 1;
+            this.testTextBox.Size = new System.Drawing.Size(800, 385);
+            this.testTextBox.TabIndex = 4;
             // 
             // Form1
             // 
@@ -61,6 +81,8 @@ namespace RequestBasicInfoProject
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.testTextBox);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.axKHOpenAPI1);
             this.Name = "Form1";
             this.Text = "Form1";
@@ -73,6 +95,8 @@ namespace RequestBasicInfoProject
         #endregion
 
         private AxKHOpenAPILib.AxKHOpenAPI axKHOpenAPI1;
+        private System.Windows.Forms.ProgressBar progressBar1;
+        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox testTextBox;
     }
 }
