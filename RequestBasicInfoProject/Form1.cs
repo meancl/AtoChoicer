@@ -121,7 +121,7 @@ namespace RequestBasicInfoProject
 
                 int nShortTerm = 600;
                 int nLongTerm = 3600;
-                int nTargetTerm = nShortTerm;
+                int nTargetTerm = nLongTerm;
 
                 int nTotalMonitored = 0;
                 int nTotalMonitorStockNum = codeKospiArr.Length + codeKosdaqArr.Length;
