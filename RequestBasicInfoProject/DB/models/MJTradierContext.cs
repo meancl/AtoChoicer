@@ -14,7 +14,7 @@ namespace RequestBasicInfoProject
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseMySql("server=database-2.clmg3ftdxi2a.ap-northeast-2.rds.amazonaws.com;database=MJTradierDB;user=sbe03253;password=jin94099");
+            optionsBuilder.UseMySql("server=221.149.119.60;port=2023;database=MJTradierDB;user=meancl;password=1234");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
