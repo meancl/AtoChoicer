@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -40,6 +41,9 @@ namespace RequestBasicInfoProject
             axKHOpenAPI1.OnReceiveTrData += OnReceiveTrDataHandler; // TR event slot connect
 
             this.Text = "모니터링 종목요청";
+            this.KeyPreview = true;
+            this.KeyUp += KeyUpHandler;
+            
             testTextBox.AppendText("로그인 시도..\r\n");
             dbContext = new MJTradierContext();
             dbContext.Database.EnsureCreated();
@@ -74,6 +78,15 @@ namespace RequestBasicInfoProject
         }
         #endregion
 
+        public void KeyUpHandler(Object sender, KeyEventArgs e)
+        {
+            char cUp = (char)e.KeyValue; // 대문자로 준다.
+            if (cUp == 27)
+            {
+                this.Close();
+                Application.Exit();
+            }
+        }
 
 
         // ============================================
@@ -108,7 +121,7 @@ namespace RequestBasicInfoProject
 
                 var yes = DateTime.Today.AddDays(-1); // 어제
                 var now = DateTime.Now; // 오늘
-                
+
 
 
                 DateTime dateTime = new DateTime(targetDay.Year, targetDay.Month, targetDay.Day); // 현재 어제 // or  targetDay
@@ -117,7 +130,7 @@ namespace RequestBasicInfoProject
                 infoDict = (dbContext.basicInfo.Where(x => x.생성시간.Equals(today)).ToList()).ToDictionary(keySelector: m => m.종목코드, elementSelector: m => m);
 
                 #endregion
-                
+
 
                 int nShortTerm = 600;
                 int nLongTerm = 3600;
@@ -127,12 +140,15 @@ namespace RequestBasicInfoProject
                 int nTotalMonitorStockNum = codeKospiArr.Length + codeKosdaqArr.Length;
                 progressBar1.Maximum = nTotalMonitorStockNum;
 
+                
+                StringBuilder sb = new StringBuilder();
+
                 void UpdateProgressBar(ref int nCnt)
                 {
                     nCnt++;
-                    label1.Text = $"{nCnt} / {nTotalMonitorStockNum} ({Math.Round(nCnt * 100.0/ nTotalMonitorStockNum, 2)}%)";
+                    label1.Text = $"{nCnt} / {nTotalMonitorStockNum} ({Math.Round(nCnt * 100.0 / nTotalMonitorStockNum, 2)}%)";
                     progressBar1.Value = nCnt;
-                    
+
                 }
 
                 for (int i = 0; i < codeKospiArr.Length; i++)
@@ -140,15 +156,22 @@ namespace RequestBasicInfoProject
                     typeDict[codeKospiArr[i]] = "KOSPI";
                     if (!infoDict.ContainsKey(codeKospiArr[i]))
                     {
+                        if (sb.Length > 0)
+                        {
+                            testTextBox.Text = sb.ToString();
+                            sb.Clear();
+                        }
+                        
                         testTextBox.AppendText($"코스피  {i + 1}번째 종목 : {codeKospiArr[i]} TR요청{NEW_LINE}");
                         RequestBasicStockInfo(codeKospiArr[i]);
                         Delay(nTargetTerm);
+                        UpdateProgressBar(ref nTotalMonitored);
                     }
                     else
                     {
-                        testTextBox.AppendText($"코스피  {i + 1}번째 종목 : {codeKospiArr[i]} 데이터베이스에 이미 존재합니다.{NEW_LINE}");
-                    }
-                    UpdateProgressBar(ref nTotalMonitored);
+                        nTotalMonitored++;
+                        sb.Append($"코스피  {i + 1}번째 종목 : {codeKospiArr[i]} 데이터베이스에 이미 존재합니다.{NEW_LINE}");
+                    }    
                 }
 
                 for (int i = 0; i < codeKosdaqArr.Length; i++)
@@ -156,16 +179,24 @@ namespace RequestBasicInfoProject
                     typeDict[codeKosdaqArr[i]] = "KOSDAQ";
                     if (!infoDict.ContainsKey(codeKosdaqArr[i]))
                     {
+                        if (sb.Length > 0)
+                        {
+                            testTextBox.Text = sb.ToString();
+                            sb.Clear();
+                        }
+
                         testTextBox.AppendText($"코스닥  {i + 1}번째 종목 : {codeKosdaqArr[i]} TR요청{NEW_LINE}");
                         RequestBasicStockInfo(codeKosdaqArr[i]);
                         Delay(nTargetTerm);
+                        UpdateProgressBar(ref nTotalMonitored);
                     }
                     else
                     {
-                        testTextBox.AppendText($"코스닥  {i + 1}번째 종목 : {codeKosdaqArr[i]} 데이터베이스에 이미 존재합니다.{NEW_LINE}");
+                        nTotalMonitored++;
+                        sb.Append($"코스닥  {i + 1}번째 종목 : {codeKosdaqArr[i]} 데이터베이스에 이미 존재합니다.{NEW_LINE}");
                     }
-                    UpdateProgressBar(ref nTotalMonitored);
                 }
+                UpdateProgressBar(ref nTotalMonitored);
 
             }
             else
@@ -176,7 +207,7 @@ namespace RequestBasicInfoProject
 
 
 
-        
+
 
         // ============================================
         // 주식기본정보요청 TR요청메소드
