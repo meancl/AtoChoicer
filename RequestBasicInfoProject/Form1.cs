@@ -145,10 +145,12 @@ namespace RequestBasicInfoProject
 
                 void UpdateProgressBar(ref int nCnt)
                 {
-                    nCnt++;
-                    label1.Text = $"{nCnt} / {nTotalMonitorStockNum} ({Math.Round(nCnt * 100.0 / nTotalMonitorStockNum, 2)}%)";
-                    progressBar1.Value = nCnt;
-
+                    if (nCnt < nTotalMonitorStockNum)
+                    {
+                        nCnt++;
+                        label1.Text = $"{nCnt} / {nTotalMonitorStockNum} ({Math.Round(nCnt * 100.0 / nTotalMonitorStockNum, 2)}%)";
+                        progressBar1.Value = nCnt;
+                    }
                 }
 
                 for (int i = 0; i < codeKospiArr.Length; i++)
