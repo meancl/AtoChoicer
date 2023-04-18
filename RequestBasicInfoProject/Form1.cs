@@ -120,12 +120,9 @@ namespace RequestBasicInfoProject
                     targetDay = DateTime.Now;
 
                 var yes = DateTime.Today.AddDays(-1); // 어제
-                var now = DateTime.Now; // 오늘
+                var tod = DateTime.Today; // 오늘
 
-
-
-                DateTime dateTime = new DateTime(targetDay.Year, targetDay.Month, targetDay.Day); // 현재 어제 // or  targetDay
-                today = dateTime;
+                today = tod;
 
                 infoDict = (dbContext.basicInfo.Where(x => x.생성시간.Equals(today)).ToList()).ToDictionary(keySelector: m => m.종목코드, elementSelector: m => m);
 
@@ -134,7 +131,7 @@ namespace RequestBasicInfoProject
 
                 int nShortTerm = 600;
                 int nLongTerm = 3600;
-                int nTargetTerm = nLongTerm;
+                int nTargetTerm = nShortTerm;
 
                 int nTotalMonitored = 0;
                 int nTotalMonitorStockNum = codeKospiArr.Length + codeKosdaqArr.Length;
