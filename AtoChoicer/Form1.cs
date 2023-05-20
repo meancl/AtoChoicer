@@ -117,12 +117,12 @@ namespace AtoChoicer
                 else if (DateTime.Today.DayOfWeek == DayOfWeek.Saturday)
                     targetDay = DateTime.Today.AddDays(-1);
                 else
-                    targetDay = DateTime.Now;
+                    targetDay = DateTime.Today;
 
                 var yes = DateTime.Today.AddDays(-1); // 어제
                 var tod = DateTime.Today; // 오늘
 
-                today = tod;
+                today = targetDay;
 
                 infoDict = (dbContext.basicInfo.Where(x => x.생성시간.Equals(today)).ToList()).ToDictionary(keySelector: m => m.종목코드, elementSelector: m => m);
 
@@ -145,6 +145,12 @@ namespace AtoChoicer
                     if (nCnt < nTotalMonitorStockNum)
                     {
                         nCnt++;
+                        label1.Text = $"{nCnt} / {nTotalMonitorStockNum} ({Math.Round(nCnt * 100.0 / nTotalMonitorStockNum, 2)}%)";
+                        progressBar1.Value = nCnt;
+                    }
+                    else
+                    {
+                        testTextBox.AppendText($"종목 초이스가 완료됐습니다.");
                         label1.Text = $"{nCnt} / {nTotalMonitorStockNum} ({Math.Round(nCnt * 100.0 / nTotalMonitorStockNum, 2)}%)";
                         progressBar1.Value = nCnt;
                     }
